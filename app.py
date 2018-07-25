@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask_restful import Api
 from flask_jwt import JWT
@@ -8,9 +10,9 @@ from resources.item import Item, ItemList
 from resources.store import Store, StoreList
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_app.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///my_app.db') # second one is default value
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False # turn off auto tracking???
-app.secret_key = 'second_server' # for JWT
+app.secret_key = os.environ.get('SECRET_KEY', 'second_server') # for JWT
 api = Api(app)
 
 jwt = JWT(app, authenticate, identity) # endpoint is /auth
@@ -21,6 +23,10 @@ api.add_resource(Store, '/store/<string:name>')
 api.add_resource(StoreList, '/stores')
 
 api.add_resource(UserRegister, '/register')
+
+@app.route('/')
+def hello(self):
+    return "Hello, World!"
 
 if __name__ == '__main__': # if launch with python, this is the main!
     from db import db
