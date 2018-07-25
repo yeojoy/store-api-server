@@ -13,10 +13,6 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False # turn off auto tracking???
 app.secret_key = 'second_server' # for JWT
 api = Api(app)
 
-@app.before_first_request
-def create_tables():
-    db.create_all()
-
 jwt = JWT(app, authenticate, identity) # endpoint is /auth
 
 api.add_resource(Item, '/item/<string:name>') # http://127.0.0.1/5000/item/yeojoy
