@@ -1,3 +1,4 @@
+import hashlib
 from flask_restful import Resource, reqparse
 from models.user import UserModel
 
@@ -23,7 +24,11 @@ class UserRegister(Resource):
         if UserModel.find_by_username(data['username']):
             return {'message': 'A user with that username already exists.'}, 400
 
-        user = UserModel(**data) # UserModel(data['username'], data['password'])
+        password = data['password']
+        if password.len() < 64:
+            password = hashlib.sha256(password.encode()).hexdigest().upper()
+
+        user = UserModel(data['name'], password) # UserModel(data['username'], data['password'])
         user.save_to_db()
         # connection = sqlite3.connect('my_app.db')
         # cursor = connection.cursor()
