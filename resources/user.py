@@ -25,10 +25,10 @@ class UserRegister(Resource):
             return {'message': 'A user with that username already exists.'}, 400
 
         password = data['password']
-        if password.len() < 64:
+        if len(password) < 64:
             password = hashlib.sha256(password.encode()).hexdigest().upper()
 
-        user = UserModel(data['name'], password) # UserModel(data['username'], data['password'])
+        user = UserModel(data['username'], password) # UserModel(data['username'], data['password'])
         user.save_to_db()
         # connection = sqlite3.connect('my_app.db')
         # cursor = connection.cursor()
@@ -40,3 +40,23 @@ class UserRegister(Resource):
         # connection.close()
 
         return {'message': 'User created successfully.'}, 201
+
+
+class User(Resource):
+    @classmethod
+    def get(cls, user_id):
+        user = UserModel.find_by_userid(user_id)
+        if not user:
+            return {'message': 'User not found.'}, 404
+
+        return user.json()
+    
+    @classmethod
+    def delete(cls, user_id):
+        user = UserModel.find_by_userid(user_id)
+        if not user:
+            return {'message': 'User not found.'}, 404
+        
+        user.delete_from_db()
+
+        return {'message': 'User deleted.'}, 200
