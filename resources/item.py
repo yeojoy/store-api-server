@@ -1,5 +1,5 @@
 from flask_restful import reqparse, Resource
-from flask_jwt import jwt_required
+from flask_jwt_extended import jwt_required
 from models.item import ItemModel
 
 class Item(Resource):
@@ -18,7 +18,7 @@ class Item(Resource):
         help = "Every item needs a store's id."
     )
 
-    @jwt_required()
+    @jwt_required
     def get(self, name):
         # item = next(filter(lambda i: i['name'] == name, items), 'None')
         # return {'message': item}, 200 if item is not None else 404
@@ -28,7 +28,7 @@ class Item(Resource):
         
         return {"message": "item not found."}, 404
 
-    @jwt_required()
+    @jwt_required
     def post(self, name):
         
         # for item in items:
@@ -52,7 +52,7 @@ class Item(Resource):
         
         return new_item.json(), 201
 
-    @jwt_required()
+    @jwt_required
     def put(self, name):
         #data = request.get_json(silent=True)
 
@@ -92,7 +92,7 @@ class Item(Resource):
         return item.json()
 
 
-    @jwt_required()
+    @jwt_required
     def delete(self, name):
         # for item in items:
         #     if item['name'] == name:
@@ -124,7 +124,7 @@ class Item(Resource):
 
 
 class ItemList(Resource):
-    @jwt_required()
+    @jwt_required
     def get(self):
         # connection = sqlite3.connect('my_app.db')
         # cursor = connection.cursor()
