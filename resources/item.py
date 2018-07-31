@@ -1,5 +1,11 @@
 from flask_restful import reqparse, Resource
-from flask_jwt_extended import jwt_required, get_jwt_claims, jwt_optional, get_jwt_identity
+from flask_jwt_extended import (
+    jwt_required, 
+    get_jwt_claims, 
+    jwt_optional, 
+    get_jwt_identity,
+    fresh_jwt_required
+)
 from models.item import ItemModel
 
 class Item(Resource):
@@ -52,7 +58,7 @@ class Item(Resource):
         
         return new_item.json(), 201
 
-    @jwt_required
+    @fresh_jwt_required
     def put(self, name):
         #data = request.get_json(silent=True)
 
