@@ -22,6 +22,14 @@ def create_tables():
 
 jwt = JWTManager(app) # not creating /auth endpoint
 
+@jwt.user_claims_loader
+def add_claims_to_jwt(identity):
+    # claim means user's level(?). He/She is admin or not.
+    if identity == 1: # Instead of hard-coding, you should read from a config file or a database
+        return {'is_admin': True}
+    
+    return {'is_admin': False}
+
 api.add_resource(Item, '/item/<string:name>') # http://127.0.0.1/5000/item/yeojoy
 api.add_resource(ItemList, '/items')
 api.add_resource(Store, '/store/<string:name>')
