@@ -36,7 +36,7 @@ def add_claims_to_jwt(identity):
 def expired_token_callback():
     return jsonify({
         'description': 'The token has expired.',
-        'error': 'toekn_expired'
+        'error': 'token_expired'
     }), 401
 
 @jwt.invalid_token_loader
@@ -57,7 +57,7 @@ def missing_token_callback(error):
 def token_not_fresh_callback():
     return jsonify({
         'description': 'The token is not fresh.',
-        'error': 'fresh_toekn_required'
+        'error': 'fresh_token_required'
     }), 401
 
 @jwt.revoked_token_loader
@@ -66,7 +66,6 @@ def revoked_token_callback():
         'description': 'The token has been revoked.',
         'error': 'token_revoked.'
     }), 401
-
 
 
 api.add_resource(Item, '/item/<string:name>') # http://127.0.0.1/5000/item/yeojoy
