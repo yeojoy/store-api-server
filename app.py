@@ -18,9 +18,9 @@ app.secret_key = os.environ.get('SECRET_KEY') # for JWT_SECRET_KEY
 
 api = Api(app)
 
-@app.before_first_request
-def create_tables():
-    db.create_all()
+# @app.before_first_request
+# def create_tables():
+#     db.create_all()
 
 jwt = JWTManager(app) # not creating /auth endpoint
 
