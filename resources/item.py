@@ -30,7 +30,7 @@ class Item(Resource):
         # return {'message': item}, 200 if item is not None else 404
         item = ItemModel.find_by_name(name)
         if item:
-            return item.json()
+            return {'item': item.json()}
         
         return {"message": "item not found."}, 404
 
@@ -56,7 +56,7 @@ class Item(Resource):
         except:
             return {"message": "An error occurred inserting the item."}, 500 # Internal server error
         
-        return new_item.json(), 201
+        return {'item': new_item.json()}, 201
 
     @fresh_jwt_required
     def put(self, name):
@@ -95,7 +95,7 @@ class Item(Resource):
 
         item.save_to_db()
 
-        return item.json()
+        return {'item': item.json()}
 
 
     @jwt_required
