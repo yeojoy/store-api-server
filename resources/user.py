@@ -57,7 +57,7 @@ class User(Resource):
         if not user:
             return {'message': 'User not found.'}, 404
 
-        return user.json()
+        return {'user': user.json()}
     
     @classmethod
     @jwt_required
