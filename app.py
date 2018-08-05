@@ -10,10 +10,13 @@ from resources.user import (
 )
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
+from blacklist import BLACKLIST_USER_IDS
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///my_app.db') # second one is default value
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False # turn off auto tracking???
+app.config['JWT_BLACKLIST_ENABLED'] = True
+app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 app.secret_key = os.environ.get('SECRET_KEY') # for JWT_SECRET_KEY
 
 api = Api(app)
@@ -31,6 +34,11 @@ def add_claims_to_jwt(identity):
         return {'is_admin': True}
     
     return {'is_admin': False}
+
+@jwt.token_in_blacklist_loader
+def check_if_token_in_blacklist(decrypted_token):
+    # if return true, user is in blacklist, so server launchs revoked_token_callback function.
+    return decrypted_token['identity'] in BLACKLIST_USER_IDS
 
 @jwt.expired_token_loader
 def expired_token_callback():

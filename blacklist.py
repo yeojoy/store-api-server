@@ -1,0 +1,1 @@
+BLACKLIST_USER_IDS = [1]
