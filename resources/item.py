@@ -28,10 +28,24 @@ class Item(Resource):
     def get(self, name):
         # item = next(filter(lambda i: i['name'] == name, items), 'None')
         # return {'message': item}, 200 if item is not None else 404
+
+        ######
+        # get query TEST
+        parser = reqparse.RequestParser()
+        parser.add_argument('q',
+            type = str,
+            required = False
+        )
+        query = parser.parse_args()['q']
+        print('\nquery string >>> {}\n'.format(query))
+        # end query TEST
+        #####
+            
         item = ItemModel.find_by_name(name)
+
         if item:
             return {'item': item.json()}
-        
+
         return {"message": "item not found."}, 404
 
     @jwt_required

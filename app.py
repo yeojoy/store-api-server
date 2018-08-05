@@ -6,7 +6,7 @@ from flask_jwt_extended import JWTManager
 
 # from security import authenticate, identity as identity_func
 from resources.user import (
-    User, UserRegister, UserLogin, TokenRefresh
+    User, UserRegister, UserLogin, UserLogout, TokenRefresh
 )
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
@@ -38,7 +38,7 @@ def add_claims_to_jwt(identity):
 @jwt.token_in_blacklist_loader
 def check_if_token_in_blacklist(decrypted_token):
     # if return true, user is in blacklist, so server launchs revoked_token_callback function.
-    return decrypted_token['identity'] in BLACKLIST_USER_IDS
+    return decrypted_token['jti'] in BLACKLIST_USER_IDS
 
 @jwt.expired_token_loader
 def expired_token_callback():
@@ -84,6 +84,8 @@ api.add_resource(StoreList, '/stores')
 api.add_resource(UserRegister, '/register')
 api.add_resource(User, '/user/<int:user_id>')
 api.add_resource(UserLogin, '/login')
+api.add_resource(UserLogout, '/logout')
+
 api.add_resource(TokenRefresh, '/refresh')
 
 @app.route('/')
