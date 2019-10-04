@@ -5,7 +5,7 @@ class ItemModel(db.Model):
     __tablename__ = 'items'
 
     id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(80))
+    name = db.Column(db.String(80), unique = True)
     price = db.Column(db.Float(precision = 2))
 
     store_id = db.Column(db.Integer, db.ForeignKey('stores.id'))
@@ -28,18 +28,6 @@ class ItemModel(db.Model):
     @classmethod
     def find_by_name(cls, name):
         return cls.query.filter_by(name = name).first()
-        # it can use chaining of filter_by
-        # connection = sqlite3.connect('my_app.db')
-        # cursor = connection.cursor()
-        # 
-        # query = "SELECT * FROM items WHERE name = ?"
-        # request = cursor.execute(query, (name,))
-        # 
-        # row = request.fetchone()
-        # connection.close()
-        # 
-        # if row:
-        #     return cls(*row)
 
     @classmethod
     def find_all(cls):
@@ -48,22 +36,6 @@ class ItemModel(db.Model):
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
-        # connection = sqlite3.connect("my_app.db")
-        # cursor = connection.cursor()
-        # 
-        # query = "INSERT INTO items VALUES (?, ?)"
-        # cursor.execute(query, (self.name, self.price, ))
-        # connection.commit()
-        # connection.close()
-
-    # def update(self):
-        # connection = sqlite3.connect("my_app.db")
-        # cursor = connection.cursor()
-        # 
-        # query = "UPDATE items SET price = ? WHERE name = ?"
-        # cursor.execute(query, (self.price, self.name,))
-        # connection.commit()
-        # connection.close()
 
     def delete_from_db(self):
         db.session.delete(self)
