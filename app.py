@@ -35,7 +35,7 @@ def check_if_token_in_blacklist(decrypted_token):
     # if return true, user is in blacklist, so server launchs revoked_token_callback function.
     return decrypted_token['jti'] in BLACKLIST_USER_IDS
 
-api.add_resource(Item, '/item/<string:name>') # http://127.0.0.1/5000/item/yeojoy
+api.add_resource(Item, '/item/<string:name>') # http://127.0.0.1/5000/item/chair
 api.add_resource(ItemList, '/items')
 api.add_resource(Store, '/store/<string:name>')
 api.add_resource(StoreList, '/stores')
